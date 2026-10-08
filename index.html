@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="임신 준비부터 수유기까지, 성분별로 챙길 구간과 근거 등급을 정리한 마미약사 엄마 영양 타임라인">
+<title>마미약사 엄마 영양 타임라인</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700;800;900&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: 한 장짜리 세로 리포트. 상단 주차 선택 → 성분별 구간 막대(주차 축 공유) → 시기별 콜아웃 → 주의 성분 → 표 → 공구 자리 → 출처 */
+:root{
+  --bg:#F8F6FB; --surface:#FFFFFF; --ink:#261E35; --muted:#6D6480; --line:#E6E0EE;
+  --accent:#F2B705; --accent-soft:#FFF1BF; --now:#7A3E8E; --now-soft:#F1E6F5; --warn:#A35A06; --stop:#B42318;
+  --f-display:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-body:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#15131D; --surface:#1E1B29; --ink:#ECEAF3; --muted:#A29DB5; --line:#332F44;
+  --accent:#F5C542; --accent-soft:#3D3214; --now:#C9A0DC; --now-soft:#2E2238; --warn:#F0A54A; --stop:#F07167; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#15131D; --surface:#1E1B29; --ink:#ECEAF3; --muted:#A29DB5; --line:#332F44;
+  --accent:#F5C542; --accent-soft:#3D3214; --now:#C9A0DC; --now-soft:#2E2238; --warn:#F0A54A; --stop:#F07167; color-scheme:dark}
+*{box-sizing:border-box}
+body{word-break:keep-all;overflow-wrap:break-word;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--f-display);font-weight:800;letter-spacing:-.01em;text-wrap:balance;line-height:1.3;margin:0}
+h1{font-size:clamp(28px,5vw,42px)}
+h2{font-size:clamp(22px,3.4vw,28px)}
+h3{font-size:18px}
+p{margin:0;max-width:65ch}
+.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:600}
+b,strong{font-weight:600}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+section{display:flex;flex-direction:column;gap:16px}
+
+header{padding-top:40px;display:flex;flex-direction:column;gap:14px}
+header .lede{font-size:16.5px;color:var(--ink)}
+header .lede em{font-style:normal;background:linear-gradient(transparent 60%,var(--accent-soft) 60%)}
+
+/* 주차 선택 */
+.picker{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:14px;padding:20px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:24px}
+.picker .controls{display:flex;flex-direction:column;gap:14px;min-width:0}
+.weeklabel{font-family:var(--f-display);font-weight:900;font-size:30px;color:var(--now);line-height:1.2}
+.weeksub{color:var(--muted);font-size:13px}
+input[type=range]{width:100%;accent-color:var(--now)}
+.due{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.due input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.due button,.chip-btn{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+.jump{display:flex;gap:6px;flex-wrap:wrap}
+.chip-btn[aria-pressed="true"]{border-color:var(--now);color:var(--now)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--now);outline-offset:2px}
+.nowlist{display:flex;flex-direction:column;gap:10px;min-width:0}
+.nowlist h3{font-size:16px}
+.nowitem{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:baseline;padding-block:8px;border-top:1px solid var(--line)}
+.nowitem:first-of-type{border-top:0}
+.nowitem .n{font-weight:600}
+.nowitem .t{grid-column:2;font-size:13px;color:var(--muted)}
+
+/* 등급 */
+.g{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;white-space:nowrap}
+.sw{width:22px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.must{background:var(--accent)}
+.cond{background:color-mix(in srgb,var(--accent) 45%,var(--surface))}
+.diet{background:repeating-linear-gradient(135deg,var(--accent) 0 2px,transparent 2px 6px);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 55%,transparent)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;gap:8px;align-items:center}
+
+/* 타임라인 */
+.tl{--name:150px;display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px 8px}
+.row{display:grid;grid-template-columns:var(--name) minmax(0,1fr);gap:12px;align-items:center;padding-block:9px;border-top:1px solid var(--line)}
+.row.head{border-top:0;padding-block:0 6px}
+.rname{display:flex;flex-direction:column;line-height:1.35;min-width:0}
+.rname .n{font-weight:600;font-size:14.5px}
+.rname .s{font-size:12px;color:var(--muted)}
+.track{position:relative;height:16px;border-radius:4px;background:color-mix(in srgb,var(--line) 45%,transparent)}
+.row.head .track{height:auto;background:none;display:flex}
+.seg{position:absolute;top:0;bottom:0;border-radius:4px}
+.track::before{content:"";position:absolute;top:-10px;bottom:-10px;left:var(--nt);border-left:1.5px dashed var(--muted);opacity:.7}
+.track::after{content:"";position:absolute;top:-10px;bottom:-10px;left:var(--now-x);width:2px;margin-left:-1px;background:var(--now);transition:left .15s}
+.row.head .track::before,.row.head .track::after{display:none}
+.phase{flex:none;font-size:11.5px;color:var(--muted);border-left:1px solid var(--line);padding-left:6px;line-height:1.3;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.phase b{display:block;color:var(--ink);font-weight:600;font-size:12px}
+.tlnote{font-size:12.5px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;padding-top:10px}
+.tlnote span{display:inline-flex;gap:6px;align-items:center}
+.dash{width:0;height:14px;border-left:1.5px dashed var(--muted)}
+.bar{width:2px;height:14px;background:var(--now)}
+
+/* 콜아웃 */
+.callouts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.callout{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px}
+.callout .big{font-family:var(--f-display);font-weight:900;font-size:44px;line-height:1;color:var(--now)}
+.callout .big small{font-size:16px;color:var(--muted);font-family:var(--f-body);margin-left:6px}
+
+/* 주의 성분 */
+.avoid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}
+.av{display:grid;grid-template-columns:72px minmax(0,1fr);gap:4px 12px;padding-block:14px;border-top:1px solid var(--line)}
+.tag{font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 8px;text-align:center;align-self:start;border:1px solid currentColor}
+.tag.stop{color:var(--stop)} .tag.warn{color:var(--warn)} .tag.skip{color:var(--muted)}
+.av .n{font-weight:600}
+.av .t{grid-column:2;font-size:13.5px;color:var(--muted)}
+
+/* 표 */
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px}
+summary{cursor:pointer;padding:16px 20px;font-weight:600}
+.tablewrap{overflow-x:auto;padding:0 20px 20px}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:13.5px;table-layout:fixed}
+col.c1{width:11%}col.c2{width:11%}col.c3{width:20%}col.c4{width:19%}col.c5{width:12%}col.c6{width:27%}
+th,td{text-align:left;padding:10px 10px;border-top:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.04em}
+td.num{font-variant-numeric:tabular-nums}
+
+/* 공구 자리 */
+.gb{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.slot{border:1.5px dashed var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px;min-height:150px;justify-content:center}
+.slot .k{font-size:12px;letter-spacing:.06em;color:var(--now);font-weight:600}
+.slot .t{color:var(--muted);font-size:13.5px}
+.adnote{font-size:12px;color:var(--muted)}
+
+footer{display:flex;flex-direction:column;gap:10px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px}
+footer p{max-width:none}
+
+@media (max-width:720px){
+  .picker,.callouts,.avoid,.gb{grid-template-columns:minmax(0,1fr)}
+  .tl{--name:0px}
+  .row{grid-template-columns:minmax(0,1fr);gap:6px}
+  .row.head .rname{display:none}
+  .rname{flex-direction:row;gap:8px;align-items:baseline;flex-wrap:wrap}
+  .phase{font-size:10.5px;padding-left:3px}
+  .phase b{font-size:11px}
+}
+@media (prefers-reduced-motion:reduce){.track::after{transition:none}}
+
+.note{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.note:not(.quiet){border-color:color-mix(in srgb,var(--now) 35%,var(--line))}
+.note h3{font-size:19px}
+h3.sub{padding-top:12px}
+.rules{list-style:none;counter-reset:r;margin:0;padding:0;display:flex;flex-direction:column}
+.rules li{counter-increment:r;display:grid;grid-template-columns:36px minmax(0,1fr);gap:2px 14px;padding-block:14px;border-top:1px solid var(--line)}
+.rules li::before{content:counter(r);grid-row:span 2;width:30px;height:30px;border-radius:8px;background:var(--accent);color:#261E35;font-family:var(--f-mono);font-weight:500;display:grid;place-items:center}
+.rules li b{font-size:15.5px}
+.rules li span{color:var(--muted);font-size:14px;max-width:65ch}
+.nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.nums>div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:4px}
+.nums .k{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.03em}
+.nums .v{font-size:28px;color:var(--now);line-height:1.2}
+.nums .t{font-size:13px;color:var(--muted)}
+.goals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}
+.goal{padding-block:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.goal h4{margin:0;font-size:16px;font-family:var(--f-display)}
+.goal h4 small{font-family:var(--f-body);font-size:12px;color:var(--now);margin-left:6px;font-weight:600}
+.goal p{font-size:14px;color:var(--muted)}
+.goal p b{color:var(--ink);margin-right:6px}
+@media (max-width:720px){.nums,.goals{grid-template-columns:minmax(0,1fr)}}
+
+.fold{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.fold>summary{list-style:none;cursor:pointer;padding:18px 56px 18px 20px;display:flex;flex-direction:column;gap:2px;position:relative;font-weight:400}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary::after{content:"+";position:absolute;right:18px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:var(--accent);color:#261E35;font-size:20px;font-weight:700;display:grid;place-items:center;transition:transform .2s}
+.fold[open]>summary::after{content:"−"}
+.fold>summary:hover{background:color-mix(in srgb,var(--accent-soft) 45%,var(--surface))}
+.fold .sk{font-size:12px;color:var(--now);font-weight:700;letter-spacing:.04em}
+.fold .st{font-family:var(--f-display);font-weight:800;font-size:clamp(18px,2.8vw,22px);line-height:1.35}
+.fold .ss{font-size:13px;color:var(--muted)}
+.foldbody{padding:4px 20px 22px;display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--line);padding-top:18px}
+.fold .tablewrap{padding:18px 20px 20px;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){.fold>summary::after{transition:none}}
+section:has(>details.fold)+section:has(>details.fold){margin-top:-42px}
+
+.toplink{align-self:flex-start;font-size:13.5px;font-weight:700;color:var(--now);text-decoration:none;background:var(--now-soft);padding:6px 14px;border-radius:999px}
+.toplink:hover{text-decoration:underline}
+.consult{background:var(--now-soft);border-radius:18px;padding:28px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px;align-items:center}
+.consult .sk{font-size:12px;color:var(--now);font-weight:700;letter-spacing:.04em}
+.cs-text{display:flex;flex-direction:column;gap:12px;min-width:0}
+.cs-list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.cs-list li::marker{color:var(--now);font-weight:700}
+.cs-act{display:flex;flex-direction:column;gap:10px;min-width:0}
+.kakao{display:block;text-align:center;background:#FEE500;color:#191600;font-weight:700;font-size:16px;text-decoration:none;border-radius:12px;padding:16px 18px}
+.kakao:hover{filter:brightness(.96)}
+.kakao:focus-visible,.toplink:focus-visible{outline:2px solid var(--now);outline-offset:2px}
+.cs-act .chip-btn{border-radius:12px;padding:10px 14px;background:var(--surface)}
+.cs-url{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;font-size:13px}
+.cs-url .mono{user-select:all}
+.msgbox{width:100%;font:inherit;font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;resize:vertical}
+@media (max-width:720px){.consult{grid-template-columns:minmax(0,1fr);padding:22px}}
+@media (max-width:720px){
+  .fold .tablewrap{overflow:visible;padding:8px 16px 18px}
+  table{min-width:0;table-layout:auto}
+  table colgroup,table thead{display:none}
+  table,tbody,tr,td{display:block;width:100%}
+  tr{padding-block:14px;border-top:1px solid var(--line)}
+  tr:first-child{border-top:0}
+  td{border-top:0;padding:3px 0;display:grid;grid-template-columns:4.2em minmax(0,1fr);gap:10px}
+  td::before{content:attr(data-l);font-size:12px;color:var(--muted);font-weight:600;padding-top:2px}
+  td.tn{display:block;font-size:16px;padding-bottom:6px}
+  td.tn::before{content:none}
+}
+p b,.t b,.rules span b,footer b{color:var(--ink);font-weight:700}
+</style>
+
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">마미약사 · 임신 · 출산 · 수유</div>
+  <h1>엄마 영양 타임라인</h1>
+  <a class="toplink" href="#consult">마미약사와 영양제 상담하기 →</a>
+  <p class="lede">영양제는 가짓수보다 <em>언제 시작하고 언제 멈추느냐</em>가 중요합니다. 임신 준비부터 수유기까지, 성분별로 챙길 구간과 근거의 단단함을 한 화면에 정리했습니다. 기준은 ACOG·CDC·WHO·NIH와 한국인 영양소 섭취기준입니다.</p>
+</header>
+
+<section aria-labelledby="pick-h">
+  <div class="picker">
+    <div class="controls">
+      <div class="eyebrow" id="pick-h">지금 몇 주차인가요</div>
+      <div><div class="weeklabel" id="wlabel">임신 20주</div><div class="weeksub" id="wsub">2분기</div></div>
+      <label for="wk" class="weeksub">막대를 움직이거나 출산예정일을 넣어보세요</label>
+      <input type="range" id="wk" min="-12" max="64" step="1" value="20">
+      <div class="jump" id="jump"></div>
+      <div class="due">
+        <label for="due">출산예정일</label>
+        <input type="date" id="due">
+        <button type="button" id="dueBtn">주차 계산</button>
+      </div>
+      <div class="weeksub" id="dueMsg">예시로 임신 20주를 보여드리고 있어요.</div>
+    </div>
+    <div class="nowlist" aria-live="polite">
+      <h3 id="nowTitle">이 시기에 챙길 것</h3>
+      <div id="nowItems"></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="tl-h">
+  <h2 id="tl-h">성분별 복용 구간</h2>
+  <p>막대의 길이는 <b>챙기는 구간</b>, 색의 진하기는 <b>근거 등급</b>입니다. 진할수록 "이 시기엔 꼭"에 가깝습니다.</p>
+  <div class="legend">
+    <span><i class="sw must"></i>필수 · 근거 확실</span>
+    <span><i class="sw cond"></i>조건부 · 검사·상황에 따라</span>
+    <span><i class="sw diet"></i>식사 우선 · 부족분만 보충</span>
+  </div>
+  <div class="tl" id="tl"></div>
+</section>
+
+<section aria-labelledby="co-h">
+  <h2 id="co-h" class="sr">시기마다 놓치기 쉬운 것</h2>
+  <div class="callouts">
+    <div class="callout">
+      <div class="eyebrow">타이밍 · 엽산</div>
+      <div class="big">6주<small>마지막 생리 시작일 기준</small></div>
+      <h3>임신을 확인하고 엽산을 시작하면 이미 늦습니다</h3>
+      <p>태아의 신경관은 <b>수정 후 약 4주, 마지막 생리 기준 임신 6주</b> 무렵 닫힙니다. 생리가 늦어져 테스트기를 확인할 때쯤엔 이 과정이 거의 끝나 있습니다. 엽산은 <b>임신 확인용이 아니라 임신 준비용</b>이고, 최소 1개월, 실제로는 <b>2~3개월 전부터</b> 시작합니다.</p>
+    </div>
+    <div class="callout">
+      <div class="eyebrow">타이밍 · 철분</div>
+      <div class="big">13주<small>2분기 · 필요량 상승</small></div>
+      <h3>철분은 혈액량이 늘어나는 2분기부터 본격적으로</h3>
+      <p>임신 중 혈액량은 <b>약 40~50%</b> 늘고, 필요량이 본격적으로 커지는 건 <b>13주 이후</b>입니다. 그 전에는 <b>빈혈 검사 결과</b>를 보고 정하면 됩니다. 보건소 철분제 지원은 16주부터 받을 수 있어요. 종합영양제에 철분이 들어 있다면 단일 철분제와 <b>총량을 합쳐서</b> 확인하세요.</p>
+    </div>
+    <div class="callout">
+      <div class="eyebrow">출산 전후 · 칼마디</div>
+      <div class="big">20주<small>시작 · 산후 3개월까지</small></div>
+      <h3>출산 전후엔 칼슘·마그네슘·비타민D를 함께</h3>
+      <p>태아 뼈가 단단해지는 <b>3분기</b>에 엄마 몸의 칼슘이 가장 많이 빠져나가고, 수유를 시작하면 <b>모유로 하루 200mg 넘게</b> 계속 나갑니다. 한국 여성은 평소 칼슘 섭취가 권장량에 못 미치는 경우가 많아 <b>식사만으로 채우기 어렵습니다.</b> 마그네슘은 이 시기 흔한 종아리 쥐에, 비타민D는 칼슘 흡수에 필요해 <b>칼마디로 함께</b> 챙기는 게 편합니다.</p>
+    </div>
+    <div class="callout">
+      <div class="eyebrow">임신 준비 · 부부</div>
+      <div class="big">90일<small>난자 성숙 · 정자 생성 주기</small></div>
+      <h3>90일 준비 영양제는 아내와 남편이 같이 먹습니다</h3>
+      <p>임신은 난자와 정자가 함께 만드는 일입니다. 난자가 성숙하는 데 <b>약 90일</b>, 정자가 새로 만들어지는 데 <b>약 72~90일</b>이 걸려서, 오늘 시작한 영양은 <b>3개월 뒤의 난자와 정자</b>에 반영됩니다. 그래서 준비 영양제는 아내 혼자가 아니라 <b>부부가 같은 날 함께</b> 시작하세요. 금주와 금연도 둘이 같이 해야 의미가 있습니다.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="av-h">
+  <details class="fold">
+    <summary><span class="sk">주의 성분 · 8가지</span><span class="st" id="av-h">굳이 챙기지 않아도 되는 것, 피해야 하는 것</span><span class="ss">눌러서 펼쳐보기</span></summary>
+    <div class="foldbody">
+      <p>타임라인에 넣지 않은 데는 이유가 있습니다. 필요 없는 것부터 임신 중 피해야 하는 것까지 섞여 있어 등급을 표시했습니다.</p>
+      <div class="avoid" id="avoid"></div>
+    </div>
+  </details>
+</section>
+
+<section aria-labelledby="diet-h" id="diet">
+  <details class="fold">
+    <summary><span class="sk">임신 준비 · 부부 식단</span><span class="st" id="diet-h">임신 확률을 높이는 남녀 식단</span><span class="ss">식사 7원칙 · 숫자 3개 · 목표별 정리 · 눌러서 펼쳐보기</span></summary>
+    <div class="foldbody">
+  <p>파인애플심이나 석류즙처럼 음식 하나로 난자 질이나 착상률이 올라간다는 근거는 없습니다. 연구에서 가장 일관되게 좋은 방향은 하나, <b>가공을 줄인 지중해식에 가까운 식사</b>입니다.</p>
+  <div class="note">
+    <h3>식단은 임신을 보장하지 않습니다. 몸의 대사 환경을 바꿀 뿐입니다.</h3>
+    <p>이 분야 연구는 대부분 관찰연구라 "임신율을 높인다"보다 <b>"생식 건강에 유리한 환경을 만든다"</b>가 정확한 표현입니다. 미국생식의학회(ASRM)도 건강한 식사는 권하지만, 특정 식단이나 항산화제가 정상 배란 여성의 자연 임신율을 확실히 높인다는 근거는 부족하다고 정리합니다.</p>
+  </div>
+
+  <h3 class="sub">임신 준비 식사 7원칙</h3>
+  <p class="weeksub">근거가 강한 순서가 아니라 실천하기 쉬운 순서입니다. 위에서부터 하나씩 바꾸세요.</p>
+  <ol class="rules">
+    <li><b>매끼 채소를 접시의 절반 정도로</b><span>엽산, 비타민C, 폴리페놀, 식이섬유가 한 번에 들어옵니다. 영양제보다 여기가 먼저입니다.</span></li>
+    <li><b>흰쌀·빵·단 음료를 줄이고 잡곡·콩·통곡물로</b><span>다낭성난소증후군(PCOS)이나 인슐린 저항성이 있다면 배란 환경과 직접 연결됩니다.</span></li>
+    <li><b>지방은 올리브유·견과류·아보카도·생선에서</b><span>트랜스지방, 튀김, 가공육 위주의 식사를 줄이는 게 핵심입니다.</span></li>
+    <li><b>수은이 적은 생선을 주 2~3회</b><span>연어, 고등어, 정어리, 멸치, 송어. 미국 FDA는 임신 준비·임신 중 여성에게 주 225~340g을 권합니다. 대형 참치, 상어, 황새치 같은 고수은 어종은 제한하세요.</span></li>
+    <li><b>달걀·콩·두부·살코기를 충분히</b><span>단백질과 함께 콜린, 철, 비타민B12가 들어옵니다. 큰 달걀 1개에 콜린이 약 150mg으로, 임신 중 기준 470mg의 약 3분의 1입니다.</span></li>
+    <li><b>가공육·단 음료·잦은 배달음식은 최소로</b><span>산화 스트레스와 인슐린 저항성을 줄이는 방향이고, 남성 정자 지표와도 관련이 보고됩니다.</span></li>
+    <li><b>술은 끊고 카페인은 하루 200mg 미만</b><span>커피만이 아니라 차, 에너지 음료, 초콜릿까지 합산합니다.</span></li>
+  </ol>
+
+  <h3 class="sub">숫자 세 개만 기억하세요</h3>
+  <div class="nums">
+    <div><span class="k">하루 상한 · 카페인</span><span class="v mono">200mg</span><span class="t">커피·차·에너지 음료·초콜릿을 모두 합산</span></div>
+    <div><span class="k">주간 목표 · 저수은 생선</span><span class="v mono">225~340g</span><span class="t">DHA를 음식으로 채우는 가장 확실한 방법</span></div>
+    <div><span class="k">임신 시도 중 · 술</span><span class="v mono">0잔</span><span class="t">안전한 양이 정해져 있지 않습니다</span></div>
+  </div>
+
+  <h3 class="sub">목표별로 보면</h3>
+  <div class="goals">
+    <div class="goal"><h4>난자 · 배란 <small>아내</small></h4><p><b>도움</b> 통곡물, 콩, 채소, 생선, 올리브유, 정상 체중 유지</p><p><b>피할 것</b> 극단적인 저탄수화물·단식, 트랜스지방, 흡연</p></div>
+    <div class="goal"><h4>정자 <small>남편</small></h4><p><b>도움</b> 생선, 견과류, 토마토, 채소·과일, 충분한 단백질</p><p><b>피할 것</b> 가공육, 과음, 흡연, 급격한 체중 증가, 사우나·노트북 같은 열 노출</p></div>
+    <div class="goal"><h4>착상 환경</h4><p><b>도움</b> 혈당이 출렁이지 않는 지중해식, 충분한 단백질과 미량영양소</p><p><b>피할 것</b> 파인애플심·석류즙 같은 음식 하나에 기대기</p></div>
+    <div class="goal"><h4>다낭성난소증후군(PCOS)</h4><p><b>도움</b> 혈당을 천천히 올리는 탄수화물, 식이섬유, 체중 5~10% 감량</p><p><b>피할 것</b> 단 음료, 야식, 정제 탄수화물 과다</p></div>
+  </div>
+
+  <div class="note quiet">
+    <h3>식단보다 직접적인 것</h3>
+    <p>미국생식의학회 정리 기준으로, <b>배란기 앞뒤 6일 동안 1~2일 간격</b>으로 관계를 갖는 것이 어떤 음식이나 영양제보다 직접적인 임신 전략입니다. <b>금연, 절주, 정상 체중 유지</b>도 어떤 보충제보다 근거가 강합니다.</p>
+  </div>
+    </div>
+  </details>
+</section>
+
+<section aria-labelledby="tb-h">
+  <h2 id="tb-h" class="sr">구간·목표량 표</h2>
+  <details class="fold">
+    <summary><span class="sk">한눈에 정리</span><span class="st">표로 보기 · 구간, 목표량, 상한</span><span class="ss">눌러서 펼쳐보기</span></summary>
+    <div class="tablewrap">
+      <table>
+        <colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"><col class="c5"><col class="c6"></colgroup>
+        <thead><tr><th>성분</th><th>등급</th><th>구간</th><th>총 목표량 (음식 포함)</th><th>상한</th><th>핵심 포인트</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <p class="adnote" style="padding-top:12px">모든 용량은 음식과 영양제를 합친 총섭취량 기준입니다. 제품 라벨 하나만 보고 판단하지 마세요.</p>
+    </div>
+  </details>
+</section>
+
+<section aria-labelledby="cs-h" id="consult">
+  <div class="consult">
+    <div class="cs-text">
+      <div class="sk">1:1 상담 · 카카오톡 채널</div>
+      <h2 id="cs-h">마미약사와 영양제 상담하기</h2>
+      <p>지금 먹고 있는 영양제가 겹치지는 않는지, 이 시기에 빠진 건 없는지 약사 엄마가 직접 봐드려요. 아래 네 가지를 같이 보내주시면 더 정확하게 답해드릴 수 있어요.</p>
+      <ol class="cs-list">
+        <li>임신 주차 또는 출산예정일 (준비 중·수유 중이면 그렇게)</li>
+        <li>지금 먹고 있는 영양제 사진 (라벨의 성분표가 보이게)</li>
+        <li>최근 혈액검사 결과가 있다면 빈혈·비타민D 수치</li>
+        <li>입덧, 변비, 다리 쥐처럼 요즘 불편한 점</li>
+      </ol>
+    </div>
+    <div class="cs-act">
+      <a class="kakao" href="https://pf.kakao.com/_Mxjxbwn" target="_blank" rel="noopener">카카오톡 채널로 상담하기</a>
+      <button type="button" class="chip-btn" id="copyMsg">지금 주차로 상담 문구 복사</button>
+      <div class="weeksub" id="copyNote" aria-live="polite"></div>
+      <textarea id="msgBox" class="msgbox" rows="4" readonly hidden></textarea>
+    </div>
+  </div>
+  <p class="adnote">상담은 일반적인 영양제 복용 안내입니다. 진단이나 처방이 필요한 내용은 담당 산부인과 선생님과 상의해 주세요.</p>
+</section>
+
+<!-- ===== 공동구매 자리 =====
+  제품이 정해지면 .slot 안의 문구를 제품명·일정·핵심 근거·링크로 바꾸세요.
+  광고 표시 문구(.adnote)는 지우지 말고 그대로 두세요. -->
+<section aria-labelledby="gb-h">
+  <div class="eyebrow">공동구매</div>
+  <h2 id="gb-h">마미약사가 고른 엄마 영양제</h2>
+  <div class="gb">
+    <div class="slot">
+      <div class="k">준비 중</div>
+      <h3>다음 공동구매 제품</h3>
+      <p class="t">일정과 제품은 인스타그램 @마미약사 공지로 먼저 알려드려요.</p>
+    </div>
+    <div class="slot">
+      <div class="k">준비 중</div>
+      <h3>다음 공동구매 제품</h3>
+      <p class="t">라벨에서 함량·형태·원료 등급을 직접 확인한 제품만 소개합니다.</p>
+    </div>
+  </div>
+  <p class="adnote">이 영역은 공동구매 상품 광고를 포함할 수 있습니다. 건강기능식품은 질병의 예방·치료를 위한 의약품이 아닙니다.</p>
+</section>
+
+<footer>
+  <p>모든 용량은 <b>총섭취량(음식 + 영양제)</b> 기준입니다. 제품 라벨 하나만 보고 판단하지 마세요.</p>
+  <p><b>기준</b> ACOG · CDC · WHO · NIH ODS · 보건복지부 2025 한국인 영양소 섭취기준 · 식품의약품안전처</p>
+  <p>일반 건강 정보이며 처방이 아닙니다. 고위험 임신, 복용 중인 약, 검사 결과에 따라 필요량이 달라지므로 <b>산부인과 담당의와 상의</b>하세요.</p>
+  <p>마미약사 · 약사 박소영</p>
+</footer>
+</div>
+
+<script>
+(function(){
+const MIN=-12, MAX=64, SPAN=MAX-MIN;
+const pct=w=>((w-MIN)/SPAN*100).toFixed(3)+'%';
+const G={must:'필수',cond:'조건부',diet:'식사 우선'};
+const RANK={must:0,cond:1,diet:2};
+
+const N=[
+ {n:'엽산',s:'신경관 형성',segs:[[-12,12,'must'],[12,64,'cond']],
+  now:{must:'신경관이 닫히는 시기. 하루도 거르지 않는 게 핵심입니다.',cond:'13주 이후~수유기엔 종합영양제 속 엽산으로 유지하면 충분합니다.'},
+  tgt:'임신 620μg DFE · 수유 550μg DFE (보충제 400~800μg)',ul:'합성 엽산 1,000μg',tip:'임신 3개월 전부터 12주까지는 반드시. 신경관결손 출산력 등 고위험군은 고용량을 처방받습니다.'},
+ {n:'요오드',s:'태아 뇌·갑상선',segs:[[-12,64,'must']],
+  now:{must:'임신 준비부터 수유기까지 꾸준히 챙기세요.'},
+  tgt:'임신 240μg · 수유 340μg (보충제 약 150μg)',ul:'2,400μg (성인 기준)',tip:'임산부 영양제에서 가장 자주 빠지는 성분입니다. 다시마·켈프 제품과 중복하지 마세요.'},
+ {n:'비타민D',s:'뼈·칼슘 흡수',segs:[[-12,64,'must']],
+  now:{must:'임신 전부터 수유기까지 꾸준히. 혈중 농도 검사를 했다면 그 결과로 용량을 맞추세요.'},
+  tgt:'400IU (10μg) 이상 · 흔히 1,000~2,000IU',ul:'4,000IU (100μg)',tip:'한국 임신부는 부족한 경우가 많습니다. 4,000IU를 넘는 고용량은 권고 상한 초과입니다.'},
+ {n:'오메가3 (EPA+DHA)',s:'태아 뇌·신경 발달',segs:[[-12,64,'must']],
+  now:{must:'임신 준비부터 수유기까지 이어갑니다. 분만 직전 복용은 담당의 안내를 따르세요.'},
+  tgt:'EPA+DHA 300mg (DHA 200mg 포함)',ul:'EPA+DHA 3g (보충제 기준)',tip:'2025 기준에 임신·수유부 EPA+DHA 기준이 처음 생겼습니다. 라벨에서 오메가3 총량이 아니라 EPA·DHA 각각의 함량을 보세요. 수유기에도 모유로 전달됩니다.'},
+ {n:'철분',s:'혈액량 증가 대비',segs:[[-12,12,'cond'],[12,64,'must']],
+  now:{cond:'임신 전~12주는 빈혈 검사(혈색소·페리틴) 결과에 따라 정합니다. 입덧이 심하면 무리하지 마세요.',must:'혈액량이 늘어나 필요량이 커지는 시기. 공복 복용이 흡수가 좋고, 속이 불편하면 식후로 옮기세요.'},
+  tgt:'임신 21mg · 수유 12mg',ul:'45mg',tip:'13주부터 필요량 상승. 모두 고용량이 아니라 검사 기반으로 조정합니다. 칼슘·차·커피와는 2시간 간격.'},
+ {n:'콜린',s:'태아 뇌 발달',segs:[[-12,64,'diet']],
+  now:{diet:'달걀 1개에 약 150mg. 종합영양제에는 거의 안 들어 있어 식사로 챙겨야 합니다.'},
+  tgt:'임신 470mg · 수유 500mg',ul:'2,500mg',tip:'2025 기준에 처음 생긴 성분입니다. 대부분의 임산부 영양제에 없습니다. 달걀·육류·콩으로 채우세요.'},
+ {n:'칼마디',s:'칼슘·마그네슘·D',segs:[[-12,20,'diet'],[20,52,'must'],[52,64,'diet']],
+  now:{diet:'우유·요거트·두부·멸치로 먼저 채우는 시기입니다.',must:'출산 전후 필수 구간. 태아 뼈 형성과 수유로 칼슘 소모가 가장 큰 때라 칼마디로 꾸준히 챙기세요. 30대 이상은 칼슘 상한이 2,000mg이라 식사와 합쳐 넘지 않게 하세요.'},
+  tgt:'칼슘 650mg · 마그네슘 임신 320mg',ul:'칼슘 2,500mg(19~29세) · 2,000mg(30~49세) · 마그네슘(보충제) 350mg',tip:'20주부터 출산 후 3개월까지 필수. 철분제와는 2시간 간격을 두고, 저녁에 먹으면 쥐 나는 밤에도 도움이 됩니다.'},
+ {n:'비타민B12',s:'해당자만',segs:[[-12,64,'cond']],
+  now:{cond:'채식, 위장질환, 메트포르민 복용 중이라면 챙기세요.'},
+  tgt:'임신 2.6μg · 수유 2.8μg',ul:'—',tip:'고용량 엽산이 B12 결핍을 가릴 수 있어 해당자는 함께 확인합니다.'},
+ {n:'코엔자임Q10',s:'임신 준비 · 부부',segs:[[-12,0,'must']],
+  now:{must:'임신 준비 1순위. 난자·정자가 새로 만들어지는 90일에 맞춰 부부가 함께 시작하세요. 난임 진료 중이면 담당의와 용량을 맞추세요.'},
+  tgt:'200~600mg (연구 용량)',ul:'—',tip:'난자 성숙·정자 생성 주기 약 90일. 임신 확인 후 계속 먹을지는 담당의와 상의합니다.'}
+];
+
+const RANGE={
+ '엽산':['임신 전 3개월~12주 · 반드시','13주~수유기 · 유지'],
+ '요오드':['임신 전 3개월~수유기'],
+ '비타민D':['임신 전 3개월~수유기'],
+ '오메가3 (EPA+DHA)':['임신 전 3개월~수유기'],
+ '철분':['임신 전~12주 · 검사 기반','13주~수유기 · 필요량 상승'],
+ '콜린':['임신 전 3개월~수유기'],
+ '칼마디':['~19주 · 식사 우선','20주~산후 3개월 · 필수','이후 · 식사 우선'],
+ '비타민B12':['해당자만 · 전 기간'],
+ '코엔자임Q10':['임신 전 최소 3개월 · 부부']
+};
+
+const AV=[
+ ['stop','피하세요','고용량 비타민A (레티놀)','레티놀 형태 고용량은 <b>기형 위험</b>이 있습니다. 베타카로틴 형태는 괜찮습니다. 레티놀 크림·먹는 여드름약도 함께 확인하세요.'],
+ ['stop','피하세요','다이어트·체지방 보조제','임신·수유 중에는 체중 감량 목적의 제품을 모두 중단합니다.'],
+ ['warn','주의','카페인·녹차추출물','임신 준비 중이라면 <b>하루 200mg 미만</b>을 권합니다(식약처 임신부 기준은 300mg 이하). 커피 외에 녹차추출물·에너지 음료·초콜릿도 합산하세요.'],
+ ['warn','주의','다시마·켈프 환 제품','요오드 보충제와 겹치면 <b>상한을 쉽게 넘깁니다.</b> 요오드는 영양제 하나로만 챙기세요.'],
+ ['warn','주의','홍삼·허브 제품','라벨에 "임산부·수유부 섭취 주의" 문구가 있는 경우가 많습니다. 드시기 전 확인하세요.'],
+ ['warn','주의','철분 중복','종합영양제와 단일 철분제를 같이 먹으면 <b>총량이 커져</b> 변비·위장장애가 심해집니다.'],
+ ['skip','필요 없음','고용량 비타민C','일상 식사로 충분합니다. 임신 중 고용량을 따로 챙길 근거가 없습니다.'],
+ ['skip','필요 없음','콜라겐·이너뷰티 제품','임신·수유 중 안전성과 효과 근거가 부족해 우선순위가 낮습니다. 출산 후 회복이 끝나고 고민해도 늦지 않습니다.']
+];
+
+const PH=[[-12,0,'준비','−3개월'],[0,14,'1분기','~13주'],[14,28,'2분기','14~27주'],[28,40,'3분기','28~40주'],[40,64,'수유기','출산 후 6개월']];
+
+const tl=document.getElementById('tl');
+tl.style.setProperty('--nt',pct(6));
+let h='<div class="row head"><div class="rname"></div><div class="track">';
+PH.forEach(p=>{h+=`<div class="phase" style="width:${(p[1]-p[0])/SPAN*100}%"><b>${p[2]}</b>${p[3]}</div>`});
+h+='</div></div>';
+N.forEach(x=>{
+  const segs=x.segs.map(s=>`<div class="seg ${s[2]}" style="left:${pct(s[0])};width:${((s[1]-s[0])/SPAN*100).toFixed(3)}%" title="${G[s[2]]}"></div>`).join('');
+  const label=x.segs.map(s=>`${wk(s[0])}–${wk(s[1])} ${G[s[2]]}`).join(', ');
+  h+=`<div class="row"><div class="rname"><span class="n">${x.n}</span><span class="s">${x.s}</span></div><div class="track" role="img" aria-label="${x.n}: ${label}">${segs}</div></div>`;
+});
+h+='<div class="tlnote"><span><i class="dash"></i>임신 6주 · 신경관이 닫히는 시점</span><span><i class="bar"></i>지금 선택한 주차</span></div>';
+tl.innerHTML=h;
+
+function wk(w){return w<0?`준비 ${-w}주 전`:w<=40?`임신 ${w}주`:`출산 후 ${w-40}주`}
+function phase(w){return w<0?'임신 준비기':w<14?'1분기':w<28?'2분기':w<=40?'3분기':'수유기'}
+
+document.getElementById('avoid').innerHTML=AV.map(a=>`<div class="av"><span class="tag ${a[0]}">${a[1]}</span><span class="n">${a[2]}</span><span class="t">${a[3]}</span></div>`).join('');
+
+document.getElementById('tbody').innerHTML=N.map(x=>{
+  const gs=[...new Set(x.segs.map(s=>s[2]))];
+  const range=RANGE[x.n].join('<br>');
+  return `<tr><td class="tn"><b>${x.n}</b></td><td data-l="등급"><div>${gs.map(g=>`<span class="g"><i class="sw ${g}"></i>${G[g]}</span>`).join('<br>')}</div></td><td data-l="구간"><div>${range}</div></td><td class="num" data-l="목표량">${x.tgt}</td><td class="num" data-l="상한">${x.ul}</td><td data-l="포인트">${x.tip}</td></tr>`;
+}).join('');
+
+const JUMPS=[[-8,'준비기'],[6,'6주'],[20,'20주'],[34,'34주'],[48,'출산 후 2달']];
+const jump=document.getElementById('jump');
+jump.innerHTML=JUMPS.map(j=>`<button type="button" class="chip-btn" data-w="${j[0]}" aria-pressed="false">${j[1]}</button>`).join('');
+jump.addEventListener('click',e=>{const b=e.target.closest('button');if(b){slider.value=b.dataset.w;msg.textContent='';update()}});
+
+const slider=document.getElementById('wk'), msg=document.getElementById('dueMsg');
+function update(){
+  const w=+slider.value;
+  tl.style.setProperty('--now-x',pct(w));
+  document.getElementById('wlabel').textContent=wk(w);
+  document.getElementById('wsub').textContent=phase(w)+(w>=0&&w<=40?` · 출산까지 약 ${40-w}주`:'');
+  jump.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.w===w));
+  const act=[];
+  N.forEach(x=>x.segs.forEach(s=>{if(w>=s[0]&&w<s[1]||(w===MAX&&s[1]===MAX))act.push({x,g:s[2]})}));
+  act.sort((a,b)=>RANK[a.g]-RANK[b.g]);
+  document.getElementById('nowTitle').textContent=`${wk(w)}에 챙길 것 · ${act.length}가지`;
+  document.getElementById('nowItems').innerHTML=act.map(a=>`<div class="nowitem"><span class="g"><i class="sw ${a.g}"></i>${G[a.g]}</span><span class="n">${a.x.n}</span><span class="t">${a.x.now[a.g]}</span></div>`).join('');
+}
+slider.addEventListener('input',()=>{msg.textContent='';update()});
+document.getElementById('dueBtn').addEventListener('click',()=>{
+  const v=document.getElementById('due').value;
+  if(!v){msg.textContent='출산예정일을 먼저 골라주세요.';return}
+  const today=new Date();today.setHours(0,0,0,0);
+  const due=new Date(v+'T00:00:00');
+  const w=Math.floor(40-(due-today)/864e5/7);
+  if(w<0){msg.textContent='예정일이 너무 멀어요. 날짜를 다시 확인해주세요.';return}
+  slider.value=Math.min(MAX,w);
+  update();
+  msg.textContent=w>MAX?'출산 후 6개월이 지나 마지막 구간을 보여드려요.':`오늘 기준 ${wk(w)}입니다. 정확한 주차는 초음파 기준을 따르세요.`;
+});
+update();
+document.getElementById('copyMsg').addEventListener('click',()=>{
+  const w=+slider.value;
+  const list=[];N.forEach(x=>x.segs.forEach(sg=>{if(w>=sg[0]&&w<sg[1])list.push(x.n)}));
+  const txt=`마미약사님, 영양제 상담 부탁드려요.\n- 지금 시기: ${wk(w)}\n- 페이지에서 본 이 시기 성분: ${list.join(', ')}\n- 지금 먹는 영양제: (사진 첨부할게요)\n- 요즘 불편한 점: `;
+  const note=document.getElementById('copyNote'), box=document.getElementById('msgBox');
+  const fallback=()=>{box.hidden=false;box.value=txt;box.focus();box.select();note.textContent='복사가 막혀 있어요. 아래 문구를 길게 눌러 복사해 주세요.'};
+  try{navigator.clipboard.writeText(txt).then(()=>{note.textContent='복사했어요. 카카오톡 채널 채팅창에 붙여넣어 주세요.'},fallback)}catch(e){fallback()}
+});
+})();
+</script>
+<style>.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style>
+
+</body>
+</html>
